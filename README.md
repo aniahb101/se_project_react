@@ -2,8 +2,4 @@
 
 ## About the project
 
-The idea of the application is pretty simple - we make a call to an API, which then responds with the daily weather forecast. We collect the weather data, process it, and then based on the forecast, we recommend suitable clothing to the user.
-
-## Links
-
-- [Figma Design](https://www.figma.com/file/DTojSwldenF9UPKQZd6RRb/Sprint-10%3A-WTWR)
+The project aims to develop an application that provides users with daily weather forecasts and recommends appropriate clothing based on the forecast. This involves making API calls to retrieve weather data, processing the information received, and generating clothing recommendations tailored to the weather conditions. By integrating real-time weather data and personalized clothing suggestions, the application enhances user experience by helping them prepare for the day ahead, ensuring they are dressed appropriately for the weather.
