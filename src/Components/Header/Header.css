@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 32px 0 28px;
+}
+
+.header__image {
+  margin-right: 24px;
+}
+
+.header__location-and-date {
+  margin: 0;
+}
+
+.header__add-button {
+  margin: 0 20px 0 auto;
+}
+
+.header__user-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header__username {
+  margin: 0;
+}
