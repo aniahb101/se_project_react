@@ -1,0 +1,9 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 80px;
+}
+
+.footer__text {
+  display: flex;
+}
