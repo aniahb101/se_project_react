@@ -1,0 +1,24 @@
+.modal__footer {
+  margin-left: 32px;
+}
+
+.modal__weather {
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+
+.modal__caption {
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.modal__image {
+  height: 498px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  width: 100%;
+}
+
+.modal__close {
+  background: center no-repeat url(../../Images/modalclosewhite.png);
+}

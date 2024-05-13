@@ -8,6 +8,11 @@
   margin-right: 24px;
 }
 
+.header__avatar {
+  height: 60px;
+  width: 60px;
+}
+
 .header__location-and-date {
   margin: 0;
 }

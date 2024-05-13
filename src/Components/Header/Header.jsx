@@ -1,6 +1,6 @@
 import "./Header.css";
 import logo from "../../Images/Logo.png";
-import avatar from "../../Images/Ellipse 18.png";
+import avatar from "../../Images/headericon.png";
 
 function Header({ handleAddClick }) {
   return (
@@ -15,7 +15,7 @@ function Header({ handleAddClick }) {
         + Add clothes
       </button>
       <div className="header__user-container">
-        <p className="header__username">Terrence Tegegne</p>
+        <p className="header__username">Alisha Tegegne</p>
         <img src={avatar} alt="Terrence Tegegne" className="header__avatar" />
       </div>
     </header>
