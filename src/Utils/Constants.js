@@ -36,3 +36,10 @@ export const defaultClothingItems = [
     link: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
+
+export const coordinates = {
+  latitude: 39.29044,
+  longitude: -76.612328,
+};
+
+export const APIkey = "0583bd5843c3aa72cd8624ea9d509732";
