@@ -78,6 +78,11 @@
   font-family: inherit;
   margin-top: 32px;
   border-radius: 4px;
+  transition: opacity 0.4s linear;
+}
+
+.modal__submit:hover {
+  opacity: 0.6;
 }
 
 .modal__radio-text {
@@ -86,4 +91,5 @@
 
 .modal__label_type_radio {
   margin-bottom: 8px;
+  accent-color: #0000;
 }

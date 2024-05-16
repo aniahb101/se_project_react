@@ -1,4 +1,4 @@
-//import cloudyday from "../../Images/Day/cloudyday.png";
+import sunny from "../../Images/day/clear.png";
 import "./WeatherCard.css";
 import { weatherOptions } from "../../Utils/Constants";
 
@@ -16,7 +16,7 @@ function WeatherCard({ weatherData }) {
     <section className="weather-card">
       <p className="weather-card__temp"> {weatherData.temp.F} &deg; F</p>
       <img
-        src={weatherOption?.url}
+        src={sunny}
         alt={`card showing ${weatherOption?.day ? "day" : "night"} time ${
           weatherOption?.condition
         } weather`}
