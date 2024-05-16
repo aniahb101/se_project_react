@@ -1,6 +1,6 @@
-import sunny from "../../Images/day/clear.png";
+import sunny from "../../images/day/clear.png";
 import "./WeatherCard.css";
-import { weatherOptions } from "../../Utils/Constants";
+import { weatherOptions } from "../../utils/Constants";
 
 function WeatherCard({ weatherData }) {
   const filteredOptions = weatherOptions.filter((option) => {
