@@ -1,63 +1,76 @@
+import dayClear from "../images/day/clear.png";
+import dayCloudy from "../images/day/clouds.png";
+import dayFog from "../images/day/fog.png";
+import dayRain from "../images/day/rain.png";
+import daySnow from "../images/day/snow.png";
+import dayStorm from "../images/day/storm.png";
+import nightClear from "../images/night/clear.png";
+import nightCloudy from "../images/night/clouds.png";
+import nightFog from "../images/night/fog.png";
+import nightRain from "../images/night/rain.png";
+import nightSnow from "../images/night/snow.png";
+import nightStorm from "../images/night/storm.png";
+
 export const weatherOptions = [
   {
     day: true,
     condition: "clear",
-    url: new URL("../Images/day/clear.png", import.meta.url).href,
+    url: dayClear,
   },
   {
     day: true,
     condition: "clouds",
-    url: new URL("../Images/day/cloudy.png", import.meta.url).href,
+    url: dayCloudy,
+  },
+  {
+    day: true,
+    condition: "fog",
+    url: dayFog,
+  },
+  {
+    day: true,
+    condition: "rain",
+    url: dayRain,
+  },
+  {
+    day: true,
+    condition: "snow",
+    url: daySnow,
+  },
+  {
+    day: true,
+    condition: "storm",
+    url: dayStorm,
   },
   {
     day: false,
     condition: "clear",
-    url: new URL("../Images/night/clear.png", import.meta.url).href,
+    url: nightClear,
   },
   {
     day: false,
     condition: "clouds",
-    url: new URL("../Images/night/cloudy.png", import.meta.url).href,
-  },
-  {
-    day: true,
-    condition: "fog",
-    url: new URL("../Images/day/fog.png", import.meta.url).href,
-  },
-  {
-    day: true,
-    condition: "rain",
-    url: new URL("../Images/day/rain.png", import.meta.url).href,
+    url: nightCloudy,
   },
   {
     day: false,
     condition: "fog",
-    url: new URL("../Images/night/fog.png", import.meta.url).href,
+    url: nightFog,
   },
   {
     day: false,
     condition: "rain",
-    url: new URL("../Images/night/rain.png", import.meta.url).href,
-  },
-  {
-    day: true,
-    condition: "snow",
-    url: new URL("../Images/day/snow.png", import.meta.url).href,
-  },
-  {
-    day: true,
-    condition: "storm",
-    url: new URL("../Images/day/storm.png", import.meta.url).href,
+    url: nightRain,
   },
   {
     day: false,
     condition: "snow",
-    url: new URL("../Images/night/snow.png", import.meta.url).href,
+    url: nightSnow,
   },
   {
     day: false,
     condition: "storm",
-    url: new URL("../Images/night/storm.png", import.meta.url).href,
+    url: nightStorm,
   },
 ];
 

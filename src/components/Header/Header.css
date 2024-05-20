@@ -20,6 +20,12 @@
 .header__add-button {
   margin: 0 20px 0 auto;
   border: none;
+  cursor: pointer;
+  transition: opacity 0.2 ease-in-out;
+}
+
+.header__add-button:hover {
+  opacity: 0.6;
 }
 
 .header__user-container {

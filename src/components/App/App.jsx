@@ -23,9 +23,7 @@ function App() {
   const modalRef = useRef(null);
 
   const handleAddClick = () => setActiveModal("add-garment");
-  const closeActiveModal = () => {
-    setActiveModal("");
-  };
+  const closeActiveModal = () => setActiveModal("");
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -34,14 +32,6 @@ function App() {
 
   const handleWeatherChange = (event) => {
     setSelectedWeather(event.target.value);
-    const labels = document.querySelectorAll(".modal__label_type_radio");
-    labels.forEach((label) => {
-      if (label.control.checked) {
-        label.style.color = "#000";
-      } else {
-        label.style.color = "#00000080";
-      }
-    });
   };
 
   const handleOutsideClick = (event) => {
@@ -57,9 +47,10 @@ function App() {
         setWeatherData(filteredData);
       })
       .catch(console.error);
+  }, []);
 
+  useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
-
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -76,12 +67,11 @@ function App() {
         <ModalWithForm
           titleText="New garment"
           buttonText="Add Garment"
-          activeModal={activeModal}
+          isOpen={activeModal === "add-garment"}
           closeActiveModal={closeActiveModal}
         >
-          {" "}
           <label htmlFor="name" className="modal__label">
-            name{" "}
+            Name
             <input
               type="text"
               className="modal__input"
@@ -90,12 +80,12 @@ function App() {
             />
           </label>
           <label htmlFor="imageUrl" className="modal__label">
-            image{" "}
+            Image
             <input
               type="url"
               className="modal__input"
               id="imageUrl"
-              placeholder="image Url"
+              placeholder="Image URL"
             />
           </label>
           <fieldset className="modal__radio-buttons">
@@ -105,6 +95,9 @@ function App() {
             <label
               htmlFor="hot"
               className="modal__label modal__label_type_radio"
+              style={{
+                color: selectedWeather === "hot" ? "#000" : "#00000080",
+              }}
             >
               <input
                 id="hot"
@@ -114,12 +107,15 @@ function App() {
                 checked={selectedWeather === "hot"}
                 onChange={handleWeatherChange}
                 name="weatherGroup"
-              />{" "}
+              />
               Hot
             </label>
             <label
               htmlFor="warm"
               className="modal__label modal__label_type_radio"
+              style={{
+                color: selectedWeather === "warm" ? "#000" : "#00000080",
+              }}
             >
               <input
                 id="warm"
@@ -129,12 +125,15 @@ function App() {
                 checked={selectedWeather === "warm"}
                 onChange={handleWeatherChange}
                 name="weatherGroup"
-              />{" "}
+              />
               Warm
             </label>
             <label
               htmlFor="cold"
               className="modal__label modal__label_type_radio"
+              style={{
+                color: selectedWeather === "cold" ? "#000" : "#00000080",
+              }}
             >
               <input
                 id="cold"
@@ -144,7 +143,7 @@ function App() {
                 checked={selectedWeather === "cold"}
                 onChange={handleWeatherChange}
                 name="weatherGroup"
-              />{" "}
+              />
               Cold
             </label>
           </fieldset>
