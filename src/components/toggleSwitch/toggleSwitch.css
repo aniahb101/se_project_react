@@ -1,0 +1,35 @@
+.switch {
+}
+
+.switch__box {
+  border-radius: 25px;
+  border: 2px solid black;
+  width: 50px;
+  height: 30px;
+  appearance: none;
+  margin-right: 20px;
+  display: flex;
+}
+
+.switch__slider {
+  border-radius: 20px;
+  width: 30px;
+  height: 30px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+}
+
+.switch__temp-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.switch__slider-F {
+}
+
+.switch__slider-C {
+}
