@@ -1,35 +1,74 @@
 .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  font-size: 17px;
+  border: 2px solid rgba(126, 126, 126, 1);
+  border-radius: 34px;
+  margin-right: 12px;
 }
 
 .switch__box {
-  border-radius: 25px;
-  border: 2px solid black;
-  width: 50px;
-  height: 30px;
-  appearance: none;
-  margin-right: 20px;
-  display: flex;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .switch__slider {
-  border-radius: 20px;
-  width: 30px;
-  height: 30px;
-  background-color: black;
-  color: white;
-  text-align: center;
-  cursor: pointer;
   position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  transition: 0.4s;
+  border-radius: 34px;
 }
 
-.switch__temp-text {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
+.switch__slider::before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: black;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.switch__box:checked + .switch__slider {
+  background-color: rgba(243, 243, 243, 1);
+}
+
+.switch__box:checked + .switch__slider::before {
+  transform: translateX(26px);
 }
 
 .switch__slider-F {
+  background-color: rgba(243, 243, 243, 1);
 }
 
 .switch__slider-C {
+  background-color: rgba(243, 243, 243, 1);
+}
+
+.switch__temp-F {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  color: white;
+}
+
+.switch__temp-C {
+  position: absolute;
+  top: -9px;
+  left: 35px;
+  color: white;
+}
+
+.switch__active {
+  color: rgba(243, 243, 243, 1);
 }
