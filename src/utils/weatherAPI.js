@@ -27,8 +27,6 @@ const isDay = ({ sunrise, sunset }, now) => {
   return sunrise * 1000 < now && now < sunset * 1000;
 };
 
-//const { currentTemperatureUnit } = useContext(CurrentTemperatureUnitContext);
-//const temp = weatherTemp?.temperature?.[currentTemperatureUnit] || 85;
 const defineWeatherType = (temperature) => {
   if (temperature > 86) {
     return "hot";
