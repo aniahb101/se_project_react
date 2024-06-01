@@ -1,0 +1,22 @@
+.clothes__container {
+  display: flex;
+  flex-direction: row;
+  padding-left: 385px;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+}
+
+.clothes__cards-list {
+  padding-left: 385px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  list-style-type: none;
+  margin-top: 0;
+}
+
+.clothes__add-button {
+  border: none;
+  color: rgba(0, 0, 0, 0.6);
+}
