@@ -12,6 +12,20 @@
   margin-bottom: 12px;
 }
 
+.modal__delete {
+  top: 520px;
+  border: none;
+  background-color: transparent;
+  color: #ff4d00;
+  position: absolute;
+  left: 400px;
+  padding: 0;
+}
+
+.modal__delete-invisible {
+  visibility: hidden;
+}
+
 .modal__image {
   height: 498px;
   border-top-left-radius: 20px;
