@@ -11,6 +11,7 @@ import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Profile from "../Profile/Profile";
 import DeleteConfirmationModal from "../DeleteModal/DeleteConfirmationModal";
+import { fetchItems, addItem, deleteItem } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -24,7 +25,20 @@ function App() {
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-  const [clothingItems, setClothingItems] = useState([]); // Example state for clothing items
+  const [clothingItems, setClothingItems] = useState([]);
+
+  useEffect(() => {
+    getWeather(coordinates, APIkey)
+      .then((data) => {
+        const filteredData = filterWeatherData(data);
+        setWeatherData(filteredData);
+      })
+      .catch(console.error);
+
+    fetchItems()
+      .then((items) => setClothingItems(items))
+      .catch(console.error);
+  }, []);
 
   const handleAddClick = () => setActiveModal("add-garment");
   const closeActiveModal = () => setActiveModal("");
@@ -41,10 +55,14 @@ function App() {
 
   const handleCardDelete = () => {
     if (selectedCard) {
-      setClothingItems((prevItems) =>
-        prevItems.filter((item) => item._id !== selectedCard._id)
-      );
-      closeActiveModal();
+      deleteItem(selectedCard._id)
+        .then(() => {
+          setClothingItems((prevItems) =>
+            prevItems.filter((item) => item._id !== selectedCard._id)
+          );
+          closeActiveModal();
+        })
+        .catch(console.error);
     }
   };
 
@@ -54,17 +72,13 @@ function App() {
   };
 
   const onAddItem = (values) => {
-    console.log(values);
-  };
-
-  useEffect(() => {
-    getWeather(coordinates, APIkey)
-      .then((data) => {
-        const filteredData = filterWeatherData(data);
-        setWeatherData(filteredData);
+    addItem(values.name, values.imageUrl, values.weather)
+      .then((newItem) => {
+        setClothingItems((prevItems) => [...prevItems, newItem]);
+        closeActiveModal();
       })
       .catch(console.error);
-  }, []);
+  };
 
   return (
     <div className="page">
@@ -80,12 +94,18 @@ function App() {
                 <Main
                   weatherData={weatherData}
                   handleCardClick={handleCardClick}
+                  clothingItems={clothingItems}
                 />
               }
             />
             <Route
               path="/profile"
-              element={<Profile onCardClick={handleCardClick} />}
+              element={
+                <Profile
+                  clothingItems={clothingItems}
+                  onCardClick={handleCardClick}
+                />
+              }
             />
           </Routes>
           <Footer />
