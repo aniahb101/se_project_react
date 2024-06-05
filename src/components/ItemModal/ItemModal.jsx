@@ -23,7 +23,7 @@ function ItemModal({
         {card && (
           <>
             <img
-              src={card.imageUrl} // Updated to use card.imageUrl
+              src={card.imageUrl} 
               alt={card.name}
               className="modal__image"
             />
