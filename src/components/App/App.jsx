@@ -73,9 +73,9 @@ function App() {
   const onAddItem = (values, onDone) => {
     addItem(values.name, values.imageUrl, values.weather)
       .then((newItem) => {
-        setClothingItems((prevItems) => [newItem, ...prevItems]); // Prepend the new item
+        setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
-        if (onDone) onDone(); // Reset the form
+        if (onDone) onDone();
       })
       .catch(console.error);
   };
