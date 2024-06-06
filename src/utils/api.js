@@ -1,11 +1,10 @@
+import { processServerResponse } from "./utils";
+
 const baseUrl = "http://localhost:3001";
 
 export const fetchItems = async () => {
   const response = await fetch(`${baseUrl}/items`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch items");
-  }
-  return response.json();
+  return processServerResponse(response);
 };
 
 export const addItem = async (name, imageUrl, weather) => {
@@ -16,18 +15,12 @@ export const addItem = async (name, imageUrl, weather) => {
     },
     body: JSON.stringify({ name, imageUrl, weather }),
   });
-  if (!response.ok) {
-    throw new Error("Failed to add item");
-  }
-  return response.json();
+  return processServerResponse(response);
 };
 
 export const deleteItem = async (id) => {
   const response = await fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
   });
-  if (!response.ok) {
-    throw new Error("Failed to delete item");
-  }
-  return response.json();
+  return processServerResponse(response);
 };
