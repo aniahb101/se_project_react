@@ -1,0 +1,105 @@
+/* LoginModal.css */
+.login-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 496px;
+  height: 304px;
+  padding: 28px;
+  padding-bottom: 0;
+  padding-right: 0;
+  border-radius: 20px;
+  transition: opacity 0.4s linear, visibility 0.4s linear;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.login-modal__title {
+  margin-top: 0;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.login-modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-modal__field {
+  margin-bottom: 15px;
+}
+
+.login-modal__label {
+  display: block;
+}
+
+.login-modal__input {
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  border: none;
+  border-bottom: 1px solid #000;
+  padding-bottom: 8px;
+  padding-left: 0;
+}
+
+.login-modal__error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.login-modal__button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.login-modal__button {
+  padding: 10px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 73px;
+  margin-right: 10px;
+}
+
+.login-modal__button:hover {
+  background-color: #0056b3;
+}
+
+.login-signup_button {
+  font-size: 16px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.login-signup_button:hover {
+  text-decoration: underline;
+}
+
+.login-modal__close {
+  background: center no-repeat url(../../images/modalclose.png);
+  border: none;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+}
+
+.login-modal.modal_opened {
+  opacity: 1;
+  visibility: visible;
+}
+
+.button_disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

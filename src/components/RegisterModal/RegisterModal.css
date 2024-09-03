@@ -1,0 +1,98 @@
+/* Register modal specific styles */
+.register-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  z-index: 1000;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 496px;
+  padding: 28px;
+  padding-bottom: 0;
+  padding-right: 0;
+  transition: opacity 0.4s linear, visibility 0.4s linear;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal_opened {
+  opacity: 1;
+  visibility: visible;
+}
+
+.register-modal__close {
+  background: center no-repeat url(../../images/modalclose.png);
+  border: none;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+}
+
+.register-modal__title {
+  margin-top: 0;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.register-modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-modal__field {
+  margin-bottom: 15px;
+}
+
+.register-modal__label {
+  display: block;
+  color: #000;
+}
+
+.register-modal__input {
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  border: none;
+  border-bottom: 1px solid #000;
+  padding-bottom: 8px;
+  padding-left: 0;
+}
+
+.register-modal__error {
+  color: #f00;
+  margin-bottom: 10px;
+}
+
+.register-modal__button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 36px;
+}
+
+.register-modal__button {
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  width: 86px;
+  height: 36px;
+}
+
+.register-modal__button:hover {
+  background-color: #0056b3;
+}
+
+.button_disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
