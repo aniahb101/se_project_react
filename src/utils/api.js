@@ -7,20 +7,35 @@ export const fetchItems = async () => {
   return processServerResponse(response);
 };
 
-export const addItem = async (name, imageUrl, weather) => {
+export const addItem = async (name, imageUrl, weather, token) => {
   const response = await fetch(`${baseUrl}/items`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ name, imageUrl, weather }),
   });
   return processServerResponse(response);
 };
 
-export const deleteItem = async (id) => {
+export const deleteItem = async (id, token) => {
   const response = await fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return processServerResponse(response);
+};
+
+export const fetchUserData = async (token) => {
+  const response = await fetch(`${baseUrl}/users/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
   return processServerResponse(response);
 };

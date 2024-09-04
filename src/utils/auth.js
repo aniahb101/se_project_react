@@ -1,4 +1,3 @@
-// src/utils/auth.js
 const BASE_URL = "http://localhost:3001";
 
 export const register = ({ name, avatar, email, password }) => {
@@ -23,6 +22,21 @@ export const authorize = ({ email, password }) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
+  }).then((response) => {
+    if (!response.ok) {
+      return Promise.reject(`Error: ${response.status}`);
+    }
+    return response.json();
+  });
+};
+
+export const checkToken = (token) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   }).then((response) => {
     if (!response.ok) {
       return Promise.reject(`Error: ${response.status}`);
