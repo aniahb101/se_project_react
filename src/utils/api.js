@@ -39,3 +39,15 @@ export const fetchUserData = async (token) => {
   });
   return processServerResponse(response);
 };
+
+export const updateUserData = async (name, avatar, token) => {
+  const response = await fetch(`${baseUrl}/users/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ name, avatar }),
+  });
+  return processServerResponse(response);
+};

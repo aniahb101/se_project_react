@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import { useLocation } from "react-router-dom";
 import "./ItemModal.css";
 
@@ -8,7 +9,14 @@ function ItemModal({
   closeActiveModal,
   openConfirmationModal,
 }) {
+  const { currentUser } = useContext(CurrentUserContext) || {};
   const location = useLocation();
+  const isOwn = card?.owner === currentUser?._id;
+  const itemDeleteButtonClassName = `modal__delete ${
+    isOwn ? "modal__delete-visible" : "modal__delete-hidden"
+  }`;
+
+  if (!activeModal) return null;
 
   return (
     <div className={`modal ${activeModal === "preview" ? "modal_opened" : ""}`}>
@@ -29,11 +37,7 @@ function ItemModal({
               <button
                 onClick={() => openConfirmationModal(card)}
                 type="button"
-                className={`modal__delete ${
-                  location.pathname === "/" && activeModal === "preview"
-                    ? "modal__delete-invisible"
-                    : ""
-                }`}
+                className={itemDeleteButtonClassName}
               >
                 Delete Item
               </button>

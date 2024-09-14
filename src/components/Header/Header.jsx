@@ -1,7 +1,7 @@
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
-import { Link } from "react-router-dom";
 import logo from "../../images/Logo.png";
-import avatar from "../../images/headericon.png"; // Default avatar image
 import ToggleSwitch from "../ToggleSwitched/ToggleSwitched";
 
 function Header({
@@ -13,10 +13,26 @@ function Header({
   userName,
   userAvatar,
 }) {
+  const navigate = useNavigate();
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
   });
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
+
+  const renderAvatar = () => {
+    if (userAvatar) {
+      return (
+        <img src={userAvatar} alt="User Avatar" className="header__avatar" />
+      );
+    } else {
+      const initials = userName ? userName[0].toUpperCase() : "?";
+      return <div className="header__avatar-placeholder">{initials}</div>;
+    }
+  };
 
   return (
     <header className="header">
@@ -35,7 +51,8 @@ function Header({
         >
           + Add clothes
         </button>
-        {!loggedIn && (
+
+        {!loggedIn ? (
           <>
             <button onClick={onSignUpClick} className="header__auth-button">
               Sign Up
@@ -44,18 +61,11 @@ function Header({
               Log In
             </button>
           </>
-        )}
-        {loggedIn && (
-          <Link to="/profile" className="header__link">
-            <div className="header__user-container">
-              <p className="header__username">{userName}</p>
-              <img
-                src={userAvatar || avatar}
-                alt="User Avatar"
-                className="header__avatar"
-              />
-            </div>
-          </Link>
+        ) : (
+          <div className="header__user-container" onClick={handleProfileClick}>
+            <p className="header__username">{userName}</p>
+            {renderAvatar()}
+          </div>
         )}
       </div>
     </header>

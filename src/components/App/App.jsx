@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 import { coordinates, APIkey } from "../../utils/Constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
+import SideBar from "../SideBar/SideBar";
 import { getWeather, filterWeatherData } from "../../utils/weatherAPI";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import AddItemModal from "../AddItemModal/AddItemModal";
@@ -16,19 +17,17 @@ import {
   addItem,
   deleteItem,
   fetchUserData,
+  updateUserData,
 } from "../../utils/api";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
+import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import { register, authorize } from "../../utils/auth";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
     type: "",
-    temp: {
-      F: 999,
-      C: 999,
-    },
+    temp: { F: 999, C: 999 },
     city: "",
   });
   const [activeModal, setActiveModal] = useState("");
@@ -40,28 +39,9 @@ function App() {
   const [userAvatar, setUserAvatar] = useState("");
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isProfileEditModalOpen, setProfileEditModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  const handleRegisterSuccess = (data) => {
-    console.log("User registered successfully:", data);
-    setRegisterModalOpen(false);
-  };
-
-  const handleLoginSuccess = (data) => {
-    console.log("Login successful:", data);
-    localStorage.setItem("jwt", data.token);
-
-    fetchUserData(data.token)
-      .then((user) => {
-        console.log("User data fetched:", user);
-        setLoggedIn(true);
-        setUserName(user.name);
-        setUserAvatar(user.avatar);
-        setLoginModalOpen(false);
-        navigate("/profile");
-      })
-      .catch((err) => console.error("Error fetching user data:", err));
-  };
+  const location = useLocation();
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
@@ -86,6 +66,42 @@ function App() {
         .catch(console.error);
     }
   }, []);
+
+  const handleRegisterSuccess = (data) => {
+    console.log("User registered successfully:", data);
+    setRegisterModalOpen(false);
+  };
+
+  const handleLoginSuccess = (data) => {
+    console.log("Login successful:", data);
+    localStorage.setItem("jwt", data.token);
+
+    fetchUserData(data.token)
+      .then((user) => {
+        console.log("User data fetched:", user);
+        setLoggedIn(true);
+        setUserName(user.name);
+        setUserAvatar(user.avatar);
+        setLoginModalOpen(false);
+        navigate("/profile");
+      })
+      .catch((err) => console.error("Error fetching user data:", err));
+  };
+
+  const handleSaveProfileChanges = ({ name, avatar }) => {
+    const token = localStorage.getItem("jwt");
+    updateUserData(name, avatar, token)
+      .then((updatedUser) => {
+        setUserName(updatedUser.name);
+        setUserAvatar(updatedUser.avatar);
+      })
+      .catch((err) => {
+        console.error("Error updating profile:", err.message);
+      })
+      .finally(() => {
+        setProfileEditModalOpen(false);
+      });
+  };
 
   const handleAddClick = () => setActiveModal("add-garment");
   const closeActiveModal = () => setActiveModal("");
@@ -118,7 +134,8 @@ function App() {
   };
 
   const onAddItem = (values, onDone) => {
-    addItem(values.name, values.imageUrl, values.weather)
+    const token = localStorage.getItem("jwt");
+    addItem(values.name, values.imageUrl, values.weather, token)
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
@@ -142,6 +159,21 @@ function App() {
             userName={userName}
             userAvatar={userAvatar}
           />
+
+          {location.pathname === "/profile" && (
+            <SideBar
+              loggedIn={loggedIn}
+              userName={userName}
+              userAvatar={userAvatar}
+              onChangeProfile={() => setProfileEditModalOpen(true)}
+              onLogout={() => {
+                localStorage.removeItem("jwt");
+                setLoggedIn(false);
+                navigate("/");
+              }}
+            />
+          )}
+
           <Routes>
             <Route
               path="/"
@@ -156,15 +188,16 @@ function App() {
             <Route
               path="/profile"
               element={
-                <ProtectedRoute loggedIn={loggedIn}>
-                  <Profile
-                    clothingItems={clothingItems}
-                    onCardClick={handleCardClick}
-                  />
-                </ProtectedRoute>
+                <ProtectedRoute
+                  element={Profile}
+                  loggedIn={loggedIn}
+                  clothingItems={clothingItems}
+                  onCardClick={handleCardClick}
+                />
               }
             />
           </Routes>
+
           <Footer />
           <AddItemModal
             isOpen={activeModal === "add-garment"}
@@ -192,6 +225,15 @@ function App() {
             <LoginModal
               onClose={() => setLoginModalOpen(false)}
               onLoginSuccess={handleLoginSuccess}
+            />
+          )}
+          {isProfileEditModalOpen && (
+            <ProfileEditModal
+              isOpen={isProfileEditModalOpen}
+              onClose={() => setProfileEditModalOpen(false)}
+              currentName={userName}
+              currentAvatar={userAvatar}
+              onSaveChanges={handleSaveProfileChanges}
             />
           )}
         </CurrentTemperatureUnitContext.Provider>

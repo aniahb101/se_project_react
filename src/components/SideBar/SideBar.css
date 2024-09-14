@@ -1,10 +1,32 @@
 .sidebar {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: flex-start;
+  left: 0;
+  top: 0;
+}
+
+.sidebar__user-info {
+  display: flex;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar__username {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 16px;
 }
 
 .sidebar__avatar {
-  height: 56px;
-  width: 56px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+
+.sidebar__button {
+  margin: 10px 0;
+  color: #000000;
+  border: none;
 }

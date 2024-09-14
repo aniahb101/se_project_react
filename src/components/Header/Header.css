@@ -17,6 +17,7 @@
 .header__avatar {
   height: 60px;
   width: 60px;
+  border-radius: 30px;
 }
 
 .header__location-and-date {
