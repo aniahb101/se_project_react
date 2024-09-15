@@ -1,20 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import "./SideBar.css";
 import avatar from "../../images/headericon.png";
-import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 
 const SideBar = ({
   loggedIn,
   userName,
   userAvatar,
   onLogout,
-  onSaveProfileChanges,
+  onChangeProfile,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-
   return (
     <div className="sidebar">
       {loggedIn && (
@@ -28,20 +22,12 @@ const SideBar = ({
             <p className="sidebar__username">{userName}</p>
           </div>
 
-          <button className="sidebar__button" onClick={handleOpenModal}>
+          <button className="sidebar__button" onClick={onChangeProfile}>
             Change profile data
           </button>
           <button className="sidebar__button" onClick={onLogout}>
             Log out
           </button>
-
-          <ProfileEditModal
-            isOpen={isModalOpen}
-            onClose={handleCloseModal}
-            currentName={userName}
-            currentAvatar={userAvatar}
-            onSaveChanges={onSaveProfileChanges}
-          />
         </>
       )}
     </div>
