@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "../../images/Logo.png";
 import ToggleSwitch from "../ToggleSwitched/ToggleSwitched";
@@ -13,15 +13,10 @@ function Header({
   userName,
   userAvatar,
 }) {
-  const navigate = useNavigate();
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
   });
-
-  const handleProfileClick = () => {
-    navigate("/profile");
-  };
 
   const renderAvatar = () => {
     if (userAvatar) {
@@ -62,10 +57,10 @@ function Header({
             </button>
           </>
         ) : (
-          <div className="header__user-container" onClick={handleProfileClick}>
+          <Link to="/profile" className="header__user-container">
             <p className="header__username">{userName}</p>
             {renderAvatar()}
-          </div>
+          </Link>
         )}
       </div>
     </header>
