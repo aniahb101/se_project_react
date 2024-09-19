@@ -51,3 +51,25 @@ export const updateUserData = async (name, avatar, token) => {
   });
   return processServerResponse(response);
 };
+
+export const addCardLike = async (id, token) => {
+  const response = await fetch(`${baseUrl}/items/${id}/likes`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return processServerResponse(response);
+};
+
+export const removeCardLike = async (id, token) => {
+  const response = await fetch(`${baseUrl}/items/${id}/likes`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return processServerResponse(response);
+};

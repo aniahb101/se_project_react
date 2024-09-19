@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .card__image {
@@ -18,4 +19,23 @@
   padding: 5px;
   border-radius: 4px;
   font-size: 16px;
+  z-index: 1;
+}
+
+.card__like-button {
+  position: absolute;
+  font-size: 16px;
+  background: center no-repeat url(../../images/like_button.png);
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  top: 15px;
+  right: 100px;
+  height: 25px;
+  width: 18px;
+}
+
+.card__like-button_liked {
+  background: center no-repeat url(../../images/likebuttonliked.png);
 }
