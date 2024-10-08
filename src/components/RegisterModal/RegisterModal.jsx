@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { register } from "../../utils/auth";
 import "./RegisterModal.css";
 
-function RegisterModal({ onClose, onRegisterSuccess }) {
+function RegisterModal({ onClose, onRegisterSuccess, switchToLogin }) {
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [email, setEmail] = useState("");
@@ -101,7 +101,9 @@ function RegisterModal({ onClose, onRegisterSuccess }) {
           >
             Sign Up
           </button>
-          <div className="login-signup_button">or Log In</div>
+          <div className="login-signup_button" onClick={switchToLogin}>
+            or Log In
+          </div>
         </div>
       </form>
     </div>

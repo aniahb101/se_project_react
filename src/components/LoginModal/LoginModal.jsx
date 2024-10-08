@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { authorize } from "../../utils/auth";
 import "./LoginModal.css";
 
-function LoginModal({ onClose, onLoginSuccess }) {
+function LoginModal({ onClose, onLoginSuccess, switchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -71,7 +71,9 @@ function LoginModal({ onClose, onLoginSuccess }) {
           >
             Login
           </button>
-          <div className="login-signup_button">or Sign Up</div>
+          <div className="login-signup_button" onClick={switchToRegister}>
+            or Sign Up
+          </div>
         </div>
       </form>
     </div>

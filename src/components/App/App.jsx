@@ -40,23 +40,40 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
+  const [userId, setUserId] = useState("");
   const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
   const [isLoginModalOpen, setLoginModalOpen] = useState(false);
   const [isProfileEditModalOpen, setProfileEditModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
+  const switchToLogin = () => {
+    setRegisterModalOpen(false);
+    setLoginModalOpen(true);
+  };
+
+  const switchToRegister = () => {
+    setLoginModalOpen(false);
+    setRegisterModalOpen(true);
+  };
+
   useEffect(() => {
+    console.log("Fetching weather and items...");
+
     getWeather(coordinates, APIkey)
       .then((data) => {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
+        console.log("Weather data fetched:", filteredData);
       })
-      .catch(console.error);
+      .catch((err) => console.error("Error fetching weather:", err));
 
     fetchItems()
-      .then((items) => setClothingItems(items))
-      .catch(console.error);
+      .then((items) => {
+        setClothingItems(items);
+        console.log("Fetched clothing items:", items);
+      })
+      .catch((err) => console.error("Error fetching items:", err));
 
     const token = localStorage.getItem("jwt");
     if (token) {
@@ -65,8 +82,10 @@ function App() {
           setLoggedIn(true);
           setUserName(user.name);
           setUserAvatar(user.avatar);
+          setUserId(user._id);
+          console.log("User data fetched:", user);
         })
-        .catch(console.error);
+        .catch((err) => console.error("Error fetching user data:", err));
     }
   }, []);
 
@@ -81,14 +100,17 @@ function App() {
 
     fetchUserData(data.token)
       .then((user) => {
-        console.log("User data fetched:", user);
         setLoggedIn(true);
         setUserName(user.name);
         setUserAvatar(user.avatar);
+        setUserId(user._id);
         setLoginModalOpen(false);
         navigate("/profile");
+        console.log("User logged in and fetched:", user);
       })
-      .catch((err) => console.error("Error fetching user data:", err));
+      .catch((err) =>
+        console.error("Error fetching user data after login:", err)
+      );
   };
 
   const handleSaveProfileChanges = ({ name, avatar }) => {
@@ -97,6 +119,7 @@ function App() {
       .then((updatedUser) => {
         setUserName(updatedUser.name);
         setUserAvatar(updatedUser.avatar);
+        console.log("Profile updated:", updatedUser);
       })
       .catch((err) => {
         console.error("Error updating profile:", err.message);
@@ -115,45 +138,56 @@ function App() {
             setClothingItems((items) =>
               items.map((item) => (item._id === id ? updatedCard : item))
             );
+            console.log("Card liked:", updatedCard);
           })
-          .catch((err) => console.log(err))
+          .catch((err) => console.log("Error liking card:", err))
       : removeCardLike(id, token)
           .then((updatedCard) => {
             setClothingItems((items) =>
               items.map((item) => (item._id === id ? updatedCard : item))
             );
+            console.log("Card unliked:", updatedCard);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.log("Error unliking card:", err));
   };
 
   const handleAddClick = () => setActiveModal("add-garment");
   const closeActiveModal = () => setActiveModal("");
 
   const handleCardClick = (card) => {
+    console.log("Card clicked:", card);
     setActiveModal("preview");
     setSelectedCard(card);
   };
 
   const openConfirmationModal = (card) => {
+    console.log("Delete confirmation modal for card:", card);
     setSelectedCard(card);
     setActiveModal("deleteConfirmation");
   };
 
   const handleCardDelete = () => {
-    if (selectedCard) {
-      deleteItem(selectedCard._id)
+    const token = localStorage.getItem("jwt");
+    if (selectedCard && token) {
+      deleteItem(selectedCard._id, token)
         .then(() => {
           setClothingItems((prevItems) =>
             prevItems.filter((item) => item._id !== selectedCard._id)
           );
           closeActiveModal();
+          console.log("Card deleted:", selectedCard);
         })
-        .catch(console.error);
+        .catch((err) => {
+          console.error("Error deleting item:", err);
+        });
+    } else {
+      console.error("No card selected or user not authenticated");
     }
   };
 
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
+    console.log("Temperature unit toggled to:", currentTemperatureUnit);
   };
 
   const onAddItem = (values, onDone) => {
@@ -163,21 +197,29 @@ function App() {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
         closeActiveModal();
         if (onDone) onDone();
+        console.log("Item added:", newItem);
       })
-      .catch(console.error);
+      .catch((err) => console.error("Error adding item:", err));
   };
 
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
     navigate("/");
+    console.log("User signed out");
   };
+
+  // Filter items based on current user ID
+  const userItems = clothingItems.filter((item) => item.owner === userId);
+  console.log("User items on profile:", userItems); // Debugging
 
   return (
     <div className="page">
       <div className="page__content">
         <CurrentUserContext.Provider
-          value={{ currentUser: { name: userName, avatar: userAvatar } }}
+          value={{
+            currentUser: { _id: userId, name: userName, avatar: userAvatar },
+          }}
         >
           <CurrentTemperatureUnitContext.Provider
             value={{ currentTemperatureUnit, handleToggleSwitchChange }}
@@ -220,9 +262,9 @@ function App() {
                   <ProtectedRoute
                     element={Profile}
                     loggedIn={loggedIn}
-                    clothingItems={clothingItems}
+                    clothingItems={userItems}
                     onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
+                    handleAddClick={handleAddClick}
                   />
                 }
               />
@@ -249,12 +291,14 @@ function App() {
               <RegisterModal
                 onClose={() => setRegisterModalOpen(false)}
                 onRegisterSuccess={handleRegisterSuccess}
+                switchToLogin={switchToLogin}
               />
             )}
             {isLoginModalOpen && (
               <LoginModal
                 onClose={() => setLoginModalOpen(false)}
                 onLoginSuccess={handleLoginSuccess}
+                switchToRegister={switchToRegister}
               />
             )}
             {isProfileEditModalOpen && (

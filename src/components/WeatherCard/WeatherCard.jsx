@@ -14,7 +14,7 @@ function WeatherCard({ weatherData }) {
     );
   });
 
-  const defaultImageUrl = "../images/day/default.png";
+  const defaultImageUrl = "./images/day/default.png";
 
   return (
     <section className="weather-card">

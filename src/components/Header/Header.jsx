@@ -39,13 +39,17 @@ function Header({
       </p>
       <div className="header__switch-container">
         <ToggleSwitch />
-        <button
-          onClick={handleAddClick}
-          type="button"
-          className="header__add-button"
-        >
-          + Add clothes
-        </button>
+
+        {}
+        {loggedIn && (
+          <button
+            onClick={handleAddClick}
+            type="button"
+            className="header__add-button"
+          >
+            + Add clothes
+          </button>
+        )}
 
         {!loggedIn ? (
           <>
