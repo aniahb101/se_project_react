@@ -20,7 +20,7 @@ const ClothesSection = ({
           item.owner,
           "Current user ID:",
           currentUser?._id
-        ); // Log for each item
+        );
         return item.owner === currentUser?._id;
       })
     : [];

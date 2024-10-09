@@ -209,9 +209,8 @@ function App() {
     console.log("User signed out");
   };
 
-  // Filter items based on current user ID
   const userItems = clothingItems.filter((item) => item.owner === userId);
-  console.log("User items on profile:", userItems); // Debugging
+  console.log("User items on profile:", userItems);
 
   return (
     <div className="page">
