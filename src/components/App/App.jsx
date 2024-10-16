@@ -216,6 +216,8 @@ function App() {
                     clothingItems={userItems}
                     onCardClick={handleCardClick}
                     handleAddClick={handleAddClick}
+                    onLogout={handleSignOut}
+                    onChangeProfile={() => setActiveModal("profileEdit")}
                   />
                 }
               />
