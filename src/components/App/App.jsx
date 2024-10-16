@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import { coordinates, APIkey } from "../../utils/Constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
-import SideBar from "../SideBar/SideBar";
 import { getWeather, filterWeatherData } from "../../utils/weatherAPI";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
@@ -38,24 +37,11 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
-  const [userId, setUserId] = useState("");
-  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
-  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-  const [isProfileEditModalOpen, setProfileEditModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null); // Unified user object
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const switchToLogin = () => {
-    setRegisterModalOpen(false);
-    setLoginModalOpen(true);
-  };
-
-  const switchToRegister = () => {
-    setLoginModalOpen(false);
-    setRegisterModalOpen(true);
-  };
+  const switchToLogin = () => setActiveModal("login");
+  const switchToRegister = () => setActiveModal("register");
 
   useEffect(() => {
     console.log("Fetching weather and items...");
@@ -80,9 +66,7 @@ function App() {
       fetchUserData(token)
         .then((user) => {
           setLoggedIn(true);
-          setUserName(user.name);
-          setUserAvatar(user.avatar);
-          setUserId(user._id);
+          setCurrentUser(user); // Set the full user object
           console.log("User data fetched:", user);
         })
         .catch((err) => console.error("Error fetching user data:", err));
@@ -91,20 +75,17 @@ function App() {
 
   const handleRegisterSuccess = (data) => {
     console.log("User registered successfully:", data);
-    setRegisterModalOpen(false);
+    setActiveModal(""); // Close modal only after successful registration
   };
 
   const handleLoginSuccess = (data) => {
-    console.log("Login successful:", data);
     localStorage.setItem("jwt", data.token);
 
     fetchUserData(data.token)
       .then((user) => {
         setLoggedIn(true);
-        setUserName(user.name);
-        setUserAvatar(user.avatar);
-        setUserId(user._id);
-        setLoginModalOpen(false);
+        setCurrentUser(user); // Set the full user object after login
+        setActiveModal(""); // Close modal only after successful login
         navigate("/profile");
         console.log("User logged in and fetched:", user);
       })
@@ -117,51 +98,37 @@ function App() {
     const token = localStorage.getItem("jwt");
     updateUserData(name, avatar, token)
       .then((updatedUser) => {
-        setUserName(updatedUser.name);
-        setUserAvatar(updatedUser.avatar);
+        setCurrentUser(updatedUser); // Update the currentUser object with new data
+        setActiveModal(""); // Close modal after successful profile update
         console.log("Profile updated:", updatedUser);
       })
-      .catch((err) => {
-        console.error("Error updating profile:", err.message);
-      })
-      .finally(() => {
-        setProfileEditModalOpen(false);
-      });
+      .catch((err) => console.error("Error updating profile:", err.message));
   };
 
   const handleCardLike = ({ id, isLiked }) => {
     const token = localStorage.getItem("jwt");
 
-    !isLiked
-      ? addCardLike(id, token)
-          .then((updatedCard) => {
-            setClothingItems((items) =>
-              items.map((item) => (item._id === id ? updatedCard : item))
-            );
-            console.log("Card liked:", updatedCard);
-          })
-          .catch((err) => console.log("Error liking card:", err))
-      : removeCardLike(id, token)
-          .then((updatedCard) => {
-            setClothingItems((items) =>
-              items.map((item) => (item._id === id ? updatedCard : item))
-            );
-            console.log("Card unliked:", updatedCard);
-          })
-          .catch((err) => console.log("Error unliking card:", err));
+    (!isLiked ? addCardLike : removeCardLike)(id, token)
+      .then((updatedCard) => {
+        setClothingItems((items) =>
+          items.map((item) => (item._id === id ? updatedCard : item))
+        );
+        console.log("Card updated:", updatedCard);
+      })
+      .catch((err) =>
+        console.log(`Error ${isLiked ? "unliking" : "liking"} card:`, err)
+      );
   };
 
   const handleAddClick = () => setActiveModal("add-garment");
   const closeActiveModal = () => setActiveModal("");
 
   const handleCardClick = (card) => {
-    console.log("Card clicked:", card);
     setActiveModal("preview");
     setSelectedCard(card);
   };
 
   const openConfirmationModal = (card) => {
-    console.log("Delete confirmation modal for card:", card);
     setSelectedCard(card);
     setActiveModal("deleteConfirmation");
   };
@@ -174,12 +141,10 @@ function App() {
           setClothingItems((prevItems) =>
             prevItems.filter((item) => item._id !== selectedCard._id)
           );
-          closeActiveModal();
+          closeActiveModal(); // Close modal only after successful deletion
           console.log("Card deleted:", selectedCard);
         })
-        .catch((err) => {
-          console.error("Error deleting item:", err);
-        });
+        .catch((err) => console.error("Error deleting item:", err));
     } else {
       console.error("No card selected or user not authenticated");
     }
@@ -195,7 +160,7 @@ function App() {
     addItem(values.name, values.imageUrl, values.weather, token)
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
-        closeActiveModal();
+        closeActiveModal(); // Close modal only after successful item addition
         if (onDone) onDone();
         console.log("Item added:", newItem);
       })
@@ -205,43 +170,30 @@ function App() {
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
+    setCurrentUser(null); // Reset user data on sign out
     navigate("/");
     console.log("User signed out");
   };
 
-  const userItems = clothingItems.filter((item) => item.owner === userId);
+  const userItems = clothingItems.filter(
+    (item) => item.owner === currentUser?._id
+  );
   console.log("User items on profile:", userItems);
 
   return (
     <div className="page">
       <div className="page__content">
-        <CurrentUserContext.Provider
-          value={{
-            currentUser: { _id: userId, name: userName, avatar: userAvatar },
-          }}
-        >
+        <CurrentUserContext.Provider value={{ currentUser }}>
           <CurrentTemperatureUnitContext.Provider
             value={{ currentTemperatureUnit, handleToggleSwitchChange }}
           >
             <Header
               handleAddClick={handleAddClick}
               weatherData={weatherData}
-              onSignUpClick={() => setRegisterModalOpen(true)}
-              onLoginClick={() => setLoginModalOpen(true)}
+              onSignUpClick={() => setActiveModal("register")}
+              onLoginClick={() => setActiveModal("login")}
               loggedIn={loggedIn}
-              userName={userName}
-              userAvatar={userAvatar}
             />
-
-            {location.pathname === "/profile" && (
-              <SideBar
-                loggedIn={loggedIn}
-                userName={userName}
-                userAvatar={userAvatar}
-                onChangeProfile={() => setProfileEditModalOpen(true)}
-                onLogout={handleSignOut}
-              />
-            )}
 
             <Routes>
               <Route
@@ -286,26 +238,26 @@ function App() {
               closeActiveModal={closeActiveModal}
               handleCardDelete={handleCardDelete}
             />
-            {isRegisterModalOpen && (
+            {activeModal === "register" && (
               <RegisterModal
-                onClose={() => setRegisterModalOpen(false)}
+                onClose={closeActiveModal}
                 onRegisterSuccess={handleRegisterSuccess}
                 switchToLogin={switchToLogin}
               />
             )}
-            {isLoginModalOpen && (
+            {activeModal === "login" && (
               <LoginModal
-                onClose={() => setLoginModalOpen(false)}
+                onClose={closeActiveModal}
                 onLoginSuccess={handleLoginSuccess}
                 switchToRegister={switchToRegister}
               />
             )}
-            {isProfileEditModalOpen && (
+            {activeModal === "profileEdit" && (
               <ProfileEditModal
-                isOpen={isProfileEditModalOpen}
-                onClose={() => setProfileEditModalOpen(false)}
-                currentName={userName}
-                currentAvatar={userAvatar}
+                isOpen={activeModal === "profileEdit"}
+                onClose={closeActiveModal}
+                currentName={currentUser?.name}
+                currentAvatar={currentUser?.avatar}
                 onSaveChanges={handleSaveProfileChanges}
               />
             )}

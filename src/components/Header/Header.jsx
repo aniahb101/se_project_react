@@ -1,30 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
 import logo from "../../images/Logo.png";
 import ToggleSwitch from "../ToggleSwitched/ToggleSwitched";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function Header({
-  handleAddClick,
-  weatherData,
-  onSignUpClick,
-  onLoginClick,
-  loggedIn,
-  userName,
-  userAvatar,
-}) {
+function Header({ handleAddClick, weatherData, onSignUpClick, onLoginClick }) {
+  const { currentUser } = useContext(CurrentUserContext);
+
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
   });
 
   const renderAvatar = () => {
-    if (userAvatar) {
+    if (currentUser?.avatar) {
       return (
-        <img src={userAvatar} alt="User Avatar" className="header__avatar" />
+        <img
+          src={currentUser.avatar}
+          alt="User Avatar"
+          className="header__avatar"
+        />
       );
     } else {
-      const initials = userName ? userName[0].toUpperCase() : "?";
+      const initials = currentUser?.name
+        ? currentUser.name[0].toUpperCase()
+        : "?";
       return <div className="header__avatar-placeholder">{initials}</div>;
     }
   };
@@ -35,13 +36,13 @@ function Header({
         <img className="header__image" src={logo} alt="Logo" />
       </Link>
       <p className="header__location-and-date">
-        {currentDate}, {weatherData.city}
+        {currentDate}, {weatherData?.city}
       </p>
       <div className="header__switch-container">
         <ToggleSwitch />
 
-        {}
-        {loggedIn && (
+        {/* Show Add Clothes button only if user is logged in */}
+        {currentUser && (
           <button
             onClick={handleAddClick}
             type="button"
@@ -51,7 +52,8 @@ function Header({
           </button>
         )}
 
-        {!loggedIn ? (
+        {/* Conditionally render buttons based on loggedIn state */}
+        {!currentUser ? (
           <>
             <button onClick={onSignUpClick} className="header__auth-button">
               Sign Up
@@ -62,7 +64,7 @@ function Header({
           </>
         ) : (
           <Link to="/profile" className="header__user-container">
-            <p className="header__username">{userName}</p>
+            <p className="header__username">{currentUser.name}</p>
             {renderAvatar()}
           </Link>
         )}
