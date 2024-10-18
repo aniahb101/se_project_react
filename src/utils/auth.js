@@ -1,3 +1,5 @@
+import { processServerResponse } from './utils';
+
 const BASE_URL = "http://localhost:3001";
 
 export const register = ({ name, avatar, email, password }) => {
@@ -7,12 +9,7 @@ export const register = ({ name, avatar, email, password }) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ name, avatar, email, password }),
-  }).then((response) => {
-    if (!response.ok) {
-      return Promise.reject(`Error: ${response.status}`);
-    }
-    return response.json();
-  });
+  }).then(processServerResponse);
 };
 
 export const authorize = ({ email, password }) => {
@@ -22,12 +19,7 @@ export const authorize = ({ email, password }) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then((response) => {
-    if (!response.ok) {
-      return Promise.reject(`Error: ${response.status}`);
-    }
-    return response.json();
-  });
+  }).then(processServerResponse);
 };
 
 export const checkToken = (token) => {
@@ -37,10 +29,5 @@ export const checkToken = (token) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-  }).then((response) => {
-    if (!response.ok) {
-      return Promise.reject(`Error: ${response.status}`);
-    }
-    return response.json();
-  });
+  }).then(processServerResponse);
 };

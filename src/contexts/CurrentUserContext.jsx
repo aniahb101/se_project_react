@@ -5,7 +5,7 @@ export const CurrentUserContext = createContext();
 
 export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
@@ -13,19 +13,19 @@ export const CurrentUserProvider = ({ children }) => {
       fetchUserData(token)
         .then((user) => {
           setCurrentUser(user);
-          setLoading(false); // Set loading to false once the user data is fetched
+          setLoading(false);
         })
         .catch((err) => {
           console.error("Error fetching user data:", err);
-          setLoading(false); // Even on error, stop loading
+          setLoading(false);
         });
     } else {
-      setLoading(false); // Stop loading if no token
+      setLoading(false);
     }
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading spinner or text until data is fetched
+    return <div>Loading...</div>;
   }
 
   return (

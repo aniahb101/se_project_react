@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import ClothesSection from "../ClothesSection/ClothesSection";
 import SideBar from "../SideBar/SideBar";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext"; // Import the context
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import "./Profile.css";
 
 const Profile = ({
@@ -11,11 +11,10 @@ const Profile = ({
   onLogout,
   onChangeProfile,
 }) => {
-  const { currentUser } = useContext(CurrentUserContext); // Access current user from context
-
+  const { currentUser } = useContext(CurrentUserContext);
   return (
     <div className="profile">
-      {/* Check if the user is logged in (currentUser exists) */}
+      {}
       {currentUser ? (
         <>
           <section className="profile__sidebar">
@@ -30,7 +29,7 @@ const Profile = ({
           </section>
         </>
       ) : (
-        <p>Loading profile...</p> // Show a loading message or redirect if not logged in
+        <p>Loading profile...</p>
       )}
     </div>
   );

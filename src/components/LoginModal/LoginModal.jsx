@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { authorize } from "../../utils/auth";
 import "./LoginModal.css";
 
 function LoginModal({ onClose, onLoginSuccess, switchToRegister }) {
@@ -10,12 +9,11 @@ function LoginModal({ onClose, onLoginSuccess, switchToRegister }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    authorize({ email, password })
-      .then((data) => {
-        onLoginSuccess(data);
-        onClose();
-      })
-      .catch((err) => setError(err.message));
+    onLoginSuccess({ email, password })
+      .then(() => {})
+      .catch((err) => {
+        setError("Login failed: " + err.message);
+      });
   };
 
   useEffect(() => {

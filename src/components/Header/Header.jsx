@@ -41,7 +41,7 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLoginClick }) {
       <div className="header__switch-container">
         <ToggleSwitch />
 
-        {/* Show Add Clothes button only if user is logged in */}
+        {}
         {currentUser && (
           <button
             onClick={handleAddClick}
@@ -52,7 +52,7 @@ function Header({ handleAddClick, weatherData, onSignUpClick, onLoginClick }) {
           </button>
         )}
 
-        {/* Conditionally render buttons based on loggedIn state */}
+        {}
         {!currentUser ? (
           <>
             <button onClick={onSignUpClick} className="header__auth-button">

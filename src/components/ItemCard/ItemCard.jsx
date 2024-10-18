@@ -1,15 +1,15 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import "./ItemCard.css";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function ItemCard({ item, onCardClick, onCardLike }) {
   const { currentUser } = useContext(CurrentUserContext);
-
   const [isLiked, setIsLiked] = useState(
     Array.isArray(item.likes) && currentUser
       ? item.likes.some((id) => id === currentUser._id)
       : false
   );
+  const [isProcessingLike, setIsProcessingLike] = useState(false);
 
   const itemLikeButtonClassName = `card__like-button ${
     isLiked ? "card__like-button_liked" : ""
@@ -20,9 +20,21 @@ function ItemCard({ item, onCardClick, onCardLike }) {
   };
 
   const handleLike = () => {
+    if (isProcessingLike) return;
+
     const newLikedState = !isLiked;
-    setIsLiked(newLikedState);
-    onCardLike({ id: item._id, isLiked: newLikedState });
+    setIsProcessingLike(true);
+
+    onCardLike({ id: item._id, isLiked: newLikedState })
+      .then(() => {
+        setIsLiked(newLikedState);
+      })
+      .catch((err) => {
+        console.error("Error toggling like:", err);
+      })
+      .finally(() => {
+        setIsProcessingLike(false);
+      });
   };
 
   return (
@@ -38,6 +50,7 @@ function ItemCard({ item, onCardClick, onCardLike }) {
         <button
           className={itemLikeButtonClassName}
           onClick={handleLike}
+          disabled={isProcessingLike}
           aria-label={isLiked ? "Unlike" : "Like"}
         />
       )}

@@ -37,7 +37,7 @@ function App() {
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
   const [clothingItems, setClothingItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null); // Unified user object
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
   const switchToLogin = () => setActiveModal("login");
@@ -66,7 +66,7 @@ function App() {
       fetchUserData(token)
         .then((user) => {
           setLoggedIn(true);
-          setCurrentUser(user); // Set the full user object
+          setCurrentUser(user);
           console.log("User data fetched:", user);
         })
         .catch((err) => console.error("Error fetching user data:", err));
@@ -75,7 +75,7 @@ function App() {
 
   const handleRegisterSuccess = (data) => {
     console.log("User registered successfully:", data);
-    setActiveModal(""); // Close modal only after successful registration
+    setActiveModal("");
   };
 
   const handleLoginSuccess = (data) => {
@@ -84,8 +84,8 @@ function App() {
     fetchUserData(data.token)
       .then((user) => {
         setLoggedIn(true);
-        setCurrentUser(user); // Set the full user object after login
-        setActiveModal(""); // Close modal only after successful login
+        setCurrentUser(user);
+        setActiveModal("");
         navigate("/profile");
         console.log("User logged in and fetched:", user);
       })
@@ -98,8 +98,8 @@ function App() {
     const token = localStorage.getItem("jwt");
     updateUserData(name, avatar, token)
       .then((updatedUser) => {
-        setCurrentUser(updatedUser); // Update the currentUser object with new data
-        setActiveModal(""); // Close modal after successful profile update
+        setCurrentUser(updatedUser);
+        setActiveModal("");
         console.log("Profile updated:", updatedUser);
       })
       .catch((err) => console.error("Error updating profile:", err.message));
@@ -107,6 +107,7 @@ function App() {
 
   const handleCardLike = ({ id, isLiked }) => {
     const token = localStorage.getItem("jwt");
+    console.log("handleCardLike:", handleCardLike);
 
     (!isLiked ? addCardLike : removeCardLike)(id, token)
       .then((updatedCard) => {
@@ -141,7 +142,7 @@ function App() {
           setClothingItems((prevItems) =>
             prevItems.filter((item) => item._id !== selectedCard._id)
           );
-          closeActiveModal(); // Close modal only after successful deletion
+          closeActiveModal();
           console.log("Card deleted:", selectedCard);
         })
         .catch((err) => console.error("Error deleting item:", err));
@@ -160,7 +161,7 @@ function App() {
     addItem(values.name, values.imageUrl, values.weather, token)
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
-        closeActiveModal(); // Close modal only after successful item addition
+        closeActiveModal();
         if (onDone) onDone();
         console.log("Item added:", newItem);
       })
@@ -170,7 +171,7 @@ function App() {
   const handleSignOut = () => {
     localStorage.removeItem("jwt");
     setLoggedIn(false);
-    setCurrentUser(null); // Reset user data on sign out
+    setCurrentUser(null);
     navigate("/");
     console.log("User signed out");
   };
@@ -203,7 +204,7 @@ function App() {
                     weatherData={weatherData}
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
-                    onCardLike={handleCardLike}
+                    //onCardLike={handleCardLike}
                   />
                 }
               />
@@ -216,6 +217,7 @@ function App() {
                     clothingItems={userItems}
                     onCardClick={handleCardClick}
                     handleAddClick={handleAddClick}
+                    onCardLike={handleCardLike}
                     onLogout={handleSignOut}
                     onChangeProfile={() => setActiveModal("profileEdit")}
                   />
