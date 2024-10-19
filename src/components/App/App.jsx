@@ -204,7 +204,7 @@ function App() {
                     weatherData={weatherData}
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
-                    //onCardLike={handleCardLike}
+                    onCardLike={handleCardLike}
                   />
                 }
               />
@@ -214,6 +214,7 @@ function App() {
                   <ProtectedRoute
                     element={Profile}
                     loggedIn={loggedIn}
+                    n
                     clothingItems={userItems}
                     onCardClick={handleCardClick}
                     handleAddClick={handleAddClick}
