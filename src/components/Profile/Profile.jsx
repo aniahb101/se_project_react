@@ -10,6 +10,7 @@ const Profile = ({
   handleAddClick,
   onLogout,
   onChangeProfile,
+  onCardLike,
 }) => {
   const { currentUser } = useContext(CurrentUserContext);
   return (
@@ -25,6 +26,7 @@ const Profile = ({
               clothingItems={clothingItems}
               onCardClick={onCardClick}
               handleAddClick={handleAddClick}
+              onCardLike={onCardLike}
             />
           </section>
         </>

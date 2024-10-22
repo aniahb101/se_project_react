@@ -7,6 +7,7 @@ const ClothesSection = ({
   clothingItems = [],
   onCardClick,
   handleAddClick,
+  onCardLike,
 }) => {
   const { currentUser } = useContext(CurrentUserContext);
 
@@ -38,7 +39,12 @@ const ClothesSection = ({
       <ul className="clothes__cards-list">
         {userItems.length > 0 ? (
           userItems.map((item) => (
-            <ItemCard key={item._id} item={item} onCardClick={onCardClick} />
+            <ItemCard
+              key={item._id}
+              item={item}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+            />
           ))
         ) : (
           <p>

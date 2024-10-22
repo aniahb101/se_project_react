@@ -107,9 +107,8 @@ function App() {
 
   const handleCardLike = ({ id, isLiked }) => {
     const token = localStorage.getItem("jwt");
-    console.log("handleCardLike:", handleCardLike);
 
-    (!isLiked ? addCardLike : removeCardLike)(id, token)
+    return (!isLiked ? addCardLike : removeCardLike)(id, token)
       .then((updatedCard) => {
         setClothingItems((items) =>
           items.map((item) => (item._id === id ? updatedCard : item))
@@ -214,7 +213,6 @@ function App() {
                   <ProtectedRoute
                     element={Profile}
                     loggedIn={loggedIn}
-                    n
                     clothingItems={userItems}
                     onCardClick={handleCardClick}
                     handleAddClick={handleAddClick}
