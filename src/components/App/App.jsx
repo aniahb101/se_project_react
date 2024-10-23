@@ -39,11 +39,27 @@ function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const switchToLogin = () => setActiveModal("login");
   const switchToRegister = () => setActiveModal("register");
+
+  useEffect(() => {
+    if (!activeModal) return;
+
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        setActiveModal("");
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal]);
 
   useEffect(() => {
     console.log("Fetching weather and items...");
@@ -168,7 +184,7 @@ function App() {
 
   const onAddItem = (values, onDone) => {
     const token = localStorage.getItem("jwt");
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     addItem(values.name, values.imageUrl, values.weather, token)
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
@@ -281,6 +297,7 @@ function App() {
                 currentAvatar={currentUser?.avatar}
                 onSaveChanges={handleSaveProfileChanges}
                 buttonText={isLoading ? "Saving..." : "Save"}
+                isLoading={isLoading}
               />
             )}
           </CurrentTemperatureUnitContext.Provider>

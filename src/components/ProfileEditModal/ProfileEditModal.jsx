@@ -7,18 +7,11 @@ const ProfileEditModal = ({
   currentName,
   currentAvatar,
   onSaveChanges,
+  buttonText = "Save",
+  isLoading,
 }) => {
   const [name, setName] = useState(currentName);
   const [avatar, setAvatar] = useState(currentAvatar);
-
-  console.log("ProfileEditModal props:", {
-    isOpen,
-    onClose,
-    currentName,
-    currentAvatar,
-    onSaveChanges,
-  });
-  console.log("onSaveChanges type:", typeof onSaveChanges);
 
   useEffect(() => {
     setName(currentName);
@@ -27,7 +20,6 @@ const ProfileEditModal = ({
 
   const handleSave = () => {
     onSaveChanges({ name, avatar });
-    onClose();
   };
 
   if (!isOpen) return null;
@@ -48,6 +40,7 @@ const ProfileEditModal = ({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter new name"
+            disabled={isLoading}
           />
         </div>
         <div className="profile-edit-modal__avatar">
@@ -58,10 +51,15 @@ const ProfileEditModal = ({
             value={avatar}
             onChange={(e) => setAvatar(e.target.value)}
             placeholder="Enter new avatar URL"
+            disabled={isLoading}
           />
         </div>
-        <button className="profile-edit-modal__button" onClick={handleSave}>
-          Save Changes
+        <button
+          className="profile-edit-modal__button"
+          onClick={handleSave}
+          disabled={isLoading}
+        >
+          {buttonText}
         </button>
       </div>
     </div>
