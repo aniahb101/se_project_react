@@ -6,6 +6,7 @@ const AddItemModal = ({ closeActiveModal, onAddItem, isOpen }) => {
   const [selectedWeather, setSelectedWeather] = useState(null);
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -21,17 +22,20 @@ const AddItemModal = ({ closeActiveModal, onAddItem, isOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     onAddItem({ name, imageUrl, weather: selectedWeather }, () => {
+      setIsLoading(false);
       setName("");
       setImageUrl("");
       setSelectedWeather(null);
+      closeActiveModal();
     });
   };
 
   return (
     <ModalWithForm
       titleText="New garment"
-      buttonText="Add Garment"
+      buttonText={isLoading ? "Adding..." : "Add Garment"}
       isOpen={isOpen}
       closeActiveModal={closeActiveModal}
       onSubmit={handleSubmit}

@@ -6,13 +6,20 @@ function LoginModal({ onClose, onLoginSuccess, switchToRegister }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     onLoginSuccess({ email, password })
-      .then(() => {})
+      .then(() => {
+        setIsLoading(false);
+        onClose();
+      })
       .catch((err) => {
         setError("Login failed: " + err.message);
+        setIsLoading(false);
       });
   };
 
@@ -65,9 +72,9 @@ function LoginModal({ onClose, onLoginSuccess, switchToRegister }) {
               isButtonDisabled ? "button_disabled" : ""
             }`}
             type="submit"
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || isLoading}
           >
-            Login
+            {isLoading ? "Logging in..." : "Login"}
           </button>
           <div className="login-signup_button" onClick={switchToRegister}>
             or Sign Up

@@ -9,15 +9,21 @@ function RegisterModal({ onClose, onRegisterSuccess, switchToLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     register({ name, avatar, email, password })
       .then((data) => {
         onRegisterSuccess(data);
+        setIsLoading(false);
         onClose();
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -97,9 +103,9 @@ function RegisterModal({ onClose, onRegisterSuccess, switchToLogin }) {
               isButtonDisabled ? "button_disabled" : ""
             }`}
             type="submit"
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || isLoading}
           >
-            Sign Up
+            {isLoading ? "Signing up..." : "Sign Up"}
           </button>
           <div className="login-signup_button" onClick={switchToLogin}>
             or Log In

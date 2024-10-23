@@ -5,6 +5,7 @@ import { coordinates, APIkey } from "../../utils/Constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
+import { authorize } from "../../utils/auth";
 import { getWeather, filterWeatherData } from "../../utils/weatherAPI";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
@@ -38,6 +39,7 @@ function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const navigate = useNavigate();
 
   const switchToLogin = () => setActiveModal("login");
@@ -78,10 +80,14 @@ function App() {
     setActiveModal("");
   };
 
-  const handleLoginSuccess = (data) => {
-    localStorage.setItem("jwt", data.token);
+  const handleLoginSuccess = ({ email, password }) => {
+    const token = localStorage.getItem("jwt");
 
-    fetchUserData(data.token)
+    return authorize({ email, password })
+      .then((data) => {
+        localStorage.setItem("jwt", data.token);
+        return fetchUserData(data.token);
+      })
       .then((user) => {
         setLoggedIn(true);
         setCurrentUser(user);
@@ -89,20 +95,25 @@ function App() {
         navigate("/profile");
         console.log("User logged in and fetched:", user);
       })
-      .catch((err) =>
-        console.error("Error fetching user data after login:", err)
-      );
+      .catch((err) => {
+        console.error("Error fetching user data after login:", err);
+        throw err;
+      });
   };
 
   const handleSaveProfileChanges = ({ name, avatar }) => {
     const token = localStorage.getItem("jwt");
+    setIsLoading(true);
     updateUserData(name, avatar, token)
       .then((updatedUser) => {
         setCurrentUser(updatedUser);
         setActiveModal("");
         console.log("Profile updated:", updatedUser);
       })
-      .catch((err) => console.error("Error updating profile:", err.message));
+      .catch((err) => console.error("Error updating profile:", err.message))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleCardLike = ({ id, isLiked }) => {
@@ -157,6 +168,7 @@ function App() {
 
   const onAddItem = (values, onDone) => {
     const token = localStorage.getItem("jwt");
+    setIsLoading(true); // Start loading
     addItem(values.name, values.imageUrl, values.weather, token)
       .then((newItem) => {
         setClothingItems((prevItems) => [newItem, ...prevItems]);
@@ -164,7 +176,10 @@ function App() {
         if (onDone) onDone();
         console.log("Item added:", newItem);
       })
-      .catch((err) => console.error("Error adding item:", err));
+      .catch((err) => console.error("Error adding item:", err))
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleSignOut = () => {
@@ -229,6 +244,7 @@ function App() {
               isOpen={activeModal === "add-garment"}
               closeActiveModal={closeActiveModal}
               onAddItem={onAddItem}
+              isLoading={isLoading}
             />
             <ItemModal
               activeModal={activeModal}
@@ -246,6 +262,7 @@ function App() {
                 onClose={closeActiveModal}
                 onRegisterSuccess={handleRegisterSuccess}
                 switchToLogin={switchToLogin}
+                isLoading={isLoading}
               />
             )}
             {activeModal === "login" && (
@@ -253,6 +270,7 @@ function App() {
                 onClose={closeActiveModal}
                 onLoginSuccess={handleLoginSuccess}
                 switchToRegister={switchToRegister}
+                isLoading={isLoading}
               />
             )}
             {activeModal === "profileEdit" && (
@@ -262,6 +280,7 @@ function App() {
                 currentName={currentUser?.name}
                 currentAvatar={currentUser?.avatar}
                 onSaveChanges={handleSaveProfileChanges}
+                buttonText={isLoading ? "Saving..." : "Save"}
               />
             )}
           </CurrentTemperatureUnitContext.Provider>

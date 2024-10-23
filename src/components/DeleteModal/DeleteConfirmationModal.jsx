@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./DeleteConfirm.css";
 
 function DeleteConfirmationModal({
@@ -6,6 +6,21 @@ function DeleteConfirmationModal({
   closeActiveModal,
   handleCardDelete,
 }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleDelete = () => {
+    setIsLoading(true);
+    handleCardDelete()
+      .then(() => {
+        setIsLoading(false);
+        closeActiveModal();
+      })
+      .catch((err) => {
+        console.error("Error deleting item:", err);
+        setIsLoading(false);
+      });
+  };
+
   return (
     <div
       className={`modal ${
@@ -26,11 +41,12 @@ function DeleteConfirmationModal({
         <p className="delete__modal-warning"> This action is irreversible.</p>
         <div className="delete__modal-actions">
           <button
-            onClick={handleCardDelete}
+            onClick={handleDelete}
             type="button"
             className="delete__modal-confirm"
+            disabled={isLoading}
           >
-            Yes, delete item
+            {isLoading ? "Deleting..." : "Yes, delete item"}
           </button>
           <button
             onClick={closeActiveModal}
