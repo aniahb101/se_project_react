@@ -6,25 +6,24 @@ function DeleteConfirmationModal({
   closeActiveModal,
   handleCardDelete,
 }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleDelete = () => {
-    setIsLoading(true);
-    handleCardDelete()
-      .then(() => {
-        setIsLoading(false);
-        closeActiveModal();
-      })
-      .catch((err) => {
-        console.error("Error deleting item:", err);
-        setIsLoading(false);
-      });
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await handleCardDelete();
+      closeActiveModal();
+    } catch (err) {
+      console.error("Error deleting item:", err);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
     <div
       className={`modal ${
-        activeModal === "deleteConfirmation" && "modal_opened"
+        activeModal === "deleteConfirmation" ? "modal_opened" : ""
       }`}
     >
       <div className="modal__container modal__container_type_confirmation">
@@ -32,26 +31,26 @@ function DeleteConfirmationModal({
           onClick={closeActiveModal}
           type="button"
           className="modal__close"
-        >
-          {" "}
-        </button>
+          aria-label="Close"
+        />
         <p className="delete__modal-warning">
           Are you sure you want to delete this item?
         </p>
-        <p className="delete__modal-warning"> This action is irreversible.</p>
+        <p className="delete__modal-warning">This action is irreversible.</p>
         <div className="delete__modal-actions">
           <button
             onClick={handleDelete}
             type="button"
             className="delete__modal-confirm"
-            disabled={isLoading}
+            disabled={isDeleting}
           >
-            {isLoading ? "Deleting..." : "Yes, delete item"}
+            {isDeleting ? "Deleting..." : "Yes, delete item"}
           </button>
           <button
             onClick={closeActiveModal}
             type="button"
             className="delete__modal-cancel"
+            disabled={isDeleting}
           >
             Cancel
           </button>

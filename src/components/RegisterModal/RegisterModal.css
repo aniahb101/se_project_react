@@ -1,20 +1,16 @@
-/* Register modal specific styles */
-.register-modal {
+.modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  z-index: 1000;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 496px;
-  padding: 28px;
-  padding-bottom: 0;
-  padding-right: 0;
-  transition: opacity 0.4s linear, visibility 0.4s linear;
-  opacity: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #00000080; /* Dimmed background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s linear, visibility 0.3s;
   z-index: 1000;
 }
 
@@ -23,14 +19,14 @@
   visibility: visible;
 }
 
-.register-modal__close {
-  background: center no-repeat url(../../images/modalclose.png);
-  border: none;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 16px;
-  height: 16px;
+.register-modal__container {
+  background-color: #fff;
+  position: relative;
+  box-sizing: border-box;
+  width: 496px;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 28px;
 }
 
 .register-modal__title {
@@ -54,7 +50,7 @@
 }
 
 .register-modal__input {
-  width: 90%;
+  width: 100%;
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -66,7 +62,7 @@
 }
 
 .register-modal__error {
-  color: #f00;
+  color: red;
   margin-bottom: 10px;
 }
 
@@ -74,19 +70,32 @@
   display: flex;
   align-items: center;
   margin-top: 20px;
-  margin-bottom: 36px;
 }
 
 .register-modal__button {
   padding: 10px;
   background-color: #000;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 124px;
   margin-right: 10px;
-  width: 86px;
-  height: 36px;
+}
+
+.register-modal__button:hover {
+  opacity: 0.6;
+}
+
+.register-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: center no-repeat url(../../images/modalclose.png);
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  border: none;
 }
 
 .button_disabled {
