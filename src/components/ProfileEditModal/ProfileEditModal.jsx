@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./ProfileEditModal.css";
 
 const ProfileEditModal = ({
@@ -18,20 +19,20 @@ const ProfileEditModal = ({
     setAvatar(currentAvatar);
   }, [currentName, currentAvatar]);
 
-  const handleSave = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     onSaveChanges({ name, avatar });
   };
 
-  if (!isOpen) return null;
-
   return (
     <div className="profile-edit-modal">
-      <div className="profile-edit-modal__content">
-        <button
-          className="profile-edit-modal__close"
-          onClick={onClose}
-        ></button>
-        <h2 className="profile-data__text">Change Profile Data</h2>
+      <ModalWithForm
+        titleText="Change Profile Data"
+        buttonText={isLoading ? "Saving..." : buttonText}
+        isOpen={isOpen}
+        closeActiveModal={onClose}
+        onSubmit={handleSubmit}
+      >
         <div className="profile-edit-modal__name">
           <label className="profile-name__label">Name*</label>
           <input
@@ -54,14 +55,7 @@ const ProfileEditModal = ({
             disabled={isLoading}
           />
         </div>
-        <button
-          className="profile-edit-modal__button"
-          onClick={handleSave}
-          disabled={isLoading}
-        >
-          {buttonText}
-        </button>
-      </div>
+      </ModalWithForm>
     </div>
   );
 };
