@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import "./ProfileEditModal.css";
 
@@ -13,6 +13,9 @@ const ProfileEditModal = ({
 }) => {
   const [name, setName] = useState(currentName);
   const [avatar, setAvatar] = useState(currentAvatar);
+
+  const nameId = useId();
+  const avatarId = useId();
 
   useEffect(() => {
     setName(currentName);
@@ -34,8 +37,11 @@ const ProfileEditModal = ({
         onSubmit={handleSubmit}
       >
         <div className="profile-edit-modal__name">
-          <label className="profile-name__label">Name*</label>
+          <label className="profile-name__label" htmlFor={nameId}>
+            Name*
+          </label>
           <input
+            id={nameId}
             className="profile-edit__text"
             type="text"
             value={name}
@@ -45,8 +51,11 @@ const ProfileEditModal = ({
           />
         </div>
         <div className="profile-edit-modal__avatar">
-          <label className="profile-avatar__label">Avatar URL*</label>
+          <label className="profile-avatar__label" htmlFor={avatarId}>
+            Avatar URL*
+          </label>
           <input
+            id={avatarId}
             className="profile-edit__text"
             type="url"
             value={avatar}

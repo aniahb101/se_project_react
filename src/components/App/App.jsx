@@ -45,17 +45,18 @@ function App() {
   const switchToLogin = () => setActiveModal("login");
   const switchToRegister = () => setActiveModal("register");
 
+  const closeActiveModal = () => setActiveModal("");
+
   useEffect(() => {
     if (!activeModal) return;
 
     const handleEscClose = (e) => {
       if (e.key === "Escape") {
-        setActiveModal("");
+        closeActiveModal();
       }
     };
 
     document.addEventListener("keydown", handleEscClose);
-
     return () => {
       document.removeEventListener("keydown", handleEscClose);
     };
@@ -93,7 +94,7 @@ function App() {
 
   const handleRegisterSuccess = (data) => {
     console.log("User registered successfully:", data);
-    setActiveModal("");
+    closeActiveModal();
   };
 
   const handleLoginSuccess = ({ email, password }) => {
@@ -107,7 +108,7 @@ function App() {
       .then((user) => {
         setLoggedIn(true);
         setCurrentUser(user);
-        setActiveModal("");
+        closeActiveModal();
         navigate("/profile");
         console.log("User logged in and fetched:", user);
       })
@@ -123,7 +124,7 @@ function App() {
     updateUserData(name, avatar, token)
       .then((updatedUser) => {
         setCurrentUser(updatedUser);
-        setActiveModal("");
+        closeActiveModal();
         console.log("Profile updated:", updatedUser);
       })
       .catch((err) => console.error("Error updating profile:", err.message))
@@ -148,7 +149,6 @@ function App() {
   };
 
   const handleAddClick = () => setActiveModal("add-garment");
-  const closeActiveModal = () => setActiveModal("");
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
