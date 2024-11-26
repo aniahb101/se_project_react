@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://aniahb101.github.io/se_project_react/",
+  "homepage": "https://styleforecast.jumpingcrab.com",
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "npm run build && scp -r ./dist/* aniah6767@35.185.32.169:/home/aniah6767/frontend"
   },
   "dependencies": {
     "react": "^18.2.0",

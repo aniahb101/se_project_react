@@ -1,6 +1,9 @@
 import { processServerResponse } from "./utils";
 
-const baseUrl = "http://localhost:3001";
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://api.styleforecast.jumpingcrab.com"
+    : "http://localhost:3001";
 
 function request(url, options = {}) {
   return fetch(url, options).then(processServerResponse);
