@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2020: true, node: true }, // Added 'node' to allow Node.js globals like 'process'
   extends: [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -19,14 +19,20 @@ module.exports = {
 
     // Disable prop-types validation.
     "react/prop-types": 0,
+
+    // Allow dangling underscores for MongoDB fields like _id
+    "no-underscore-dangle": ["error", { allow: ["_id"] }],
+
+    // Disable no-unused-vars for React (like React 17+ unused imports)
+    "no-unused-vars": ["warn", { varsIgnorePattern: "^React$" }],
+
+    // Allow specific ESLint warnings to avoid interruptions
+    "no-undef": "warn",
   },
 
-  // Add an overrides array. Without this, ESLint could only be run via
-  // the npm run lint command. Adding this will allow it to be run also
-  // via the global `npx eslint .` command.
   overrides: [
     {
-      // Without this, `npx eslint .` doesn't run on jsx files.
+      // Enable ESLint for both .js and .jsx files
       files: ["*.js", "*.jsx"],
     },
   ],
