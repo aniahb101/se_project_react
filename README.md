@@ -16,3 +16,5 @@ By offering a seamless and informative experience, WTWR empowers users to make w
 - **Live Application**: [WTWR - What to Wear?](https://styleforecast.vercel.app/)
 - **Backend Repository**: [GitHub - se_project_express](https://github.com/aniahb101/se_project_express)
 
+![WTWR App Preview](src/images/1719367494343.jpg)
+
