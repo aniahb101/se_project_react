@@ -1,8 +1,18 @@
 # WTWR (What to Wear?)
 
-## About the project
+## About the Project
 
-The project aims to develop an application that provides users with daily weather forecasts and recommends appropriate clothing based on the forecast. This involves making API calls to retrieve weather data, processing the information received, and generating clothing recommendations tailored to the weather conditions. By integrating real-time weather data and personalized clothing suggestions, the application enhances user experience by helping them prepare for the day ahead, ensuring they are dressed appropriately for the weather.
+WTWR (What to Wear?) is an innovative application designed to provide users with accurate daily weather forecasts while suggesting appropriate clothing choices based on real-time weather data. By integrating weather API services, the application fetches up-to-date meteorological information, processes the data, and generates customized clothing recommendations to help users dress appropriately for the day's conditions.
 
-link : https://styleforecast.vercel.app/
-backend link : https://github.com/aniahb101/se_project_express
+### Features:
+- **Real-time Weather Data**: Retrieves up-to-date weather forecasts using API calls.
+- **Personalized Clothing Suggestions**: Offers tailored recommendations based on temperature, precipitation, and overall weather conditions.
+- **User-Friendly Interface**: Provides an intuitive design for seamless user experience.
+- **Secure & Reliable Backend**: Ensures smooth data processing and secure user interactions.
+
+By offering a seamless and informative experience, WTWR empowers users to make well-informed decisions about their daily attire, helping them stay comfortable and prepared for any weather scenario.
+
+### Links:
+- **Live Application**: [WTWR - What to Wear?](https://styleforecast.vercel.app/)
+- **Backend Repository**: [GitHub - se_project_express](https://github.com/aniahb101/se_project_express)
+
