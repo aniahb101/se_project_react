@@ -1,9 +1,6 @@
 import { processServerResponse } from "./utils";
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://se-project-express-2xc6.onrender.com"
-    : "http://localhost:3001";
+const baseUrl = "https://se-project-express-2xc6.onrender.com";
 
 function request(url, options = {}) {
   return fetch(url, options).then(processServerResponse);
