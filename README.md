@@ -4,6 +4,12 @@
 
 WTWR (What to Wear?) is an innovative application designed to provide users with accurate daily weather forecasts while suggesting appropriate clothing choices based on real-time weather data. By integrating weather API services, the application fetches up-to-date meteorological information, processes the data, and generates customized clothing recommendations to help users dress appropriately for the day's conditions.
 
+## 🎥 Demo
+
+![WTWR Demo]
+
+![Image](https://github.com/user-attachments/assets/fd0e589c-ad9d-4412-bb2d-2da74c858416)
+
 ### Features:
 - **Real-time Weather Data**: Retrieves up-to-date weather forecasts using API calls.
 - **Personalized Clothing Suggestions**: Offers tailored recommendations based on temperature, precipitation, and overall weather conditions.
