@@ -1,9 +1,6 @@
 import { processServerResponse } from "./utils";
 
-const baseUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://api.styleforecast.jumpingcrab.com"
-    : "http://localhost:3001";
+const baseUrl = "https://se-project-express-2xc6.onrender.com";
 
 export const register = ({ name, avatar, email, password }) => {
   return fetch(`${baseUrl}/signup`, {
