@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import { coordinates, APIkey } from "../../utils/Constants";
 import Header from "../Header/Header";
+import WeatherCard from "../WeatherCard/WeatherCard";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import { authorize } from "../../utils/auth";
@@ -26,6 +27,7 @@ import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
 import ProfileEditModal from "../ProfileEditModal/ProfileEditModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import ExampleCardsSection from "../ExampleCardsSection/ExampleCardsSection";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -44,7 +46,6 @@ function App() {
 
   const switchToLogin = () => setActiveModal("login");
   const switchToRegister = () => setActiveModal("register");
-
   const closeActiveModal = () => setActiveModal("");
 
   useEffect(() => {
@@ -226,16 +227,26 @@ function App() {
               loggedIn={loggedIn}
             />
 
+            <WeatherCard weatherData={weatherData} />
+
             <Routes>
               <Route
                 path="/"
                 element={
-                  <Main
-                    weatherData={weatherData}
-                    handleCardClick={handleCardClick}
-                    clothingItems={clothingItems}
-                    onCardLike={handleCardLike}
-                  />
+                  loggedIn ? (
+                    <Main
+                      weatherData={weatherData}
+                      handleCardClick={handleCardClick}
+                      clothingItems={clothingItems}
+                      onCardLike={handleCardLike}
+                    />
+                  ) : (
+                    <ExampleCardsSection
+                      weatherData={weatherData}
+                      onCardClick={handleCardClick}
+                      onCardLike={handleCardLike}
+                    />
+                  )
                 }
               />
               <Route
@@ -256,6 +267,7 @@ function App() {
             </Routes>
 
             <Footer />
+
             <AddItemModal
               isOpen={activeModal === "add-garment"}
               closeActiveModal={closeActiveModal}

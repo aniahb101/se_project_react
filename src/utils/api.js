@@ -2,7 +2,7 @@ import { processServerResponse } from "./utils";
 
 const baseUrl =
   process.env.NODE_ENV === "production"
-    ? "https://api.styleforecast.jumpingcrab.com"
+    ? "https://se-project-express-2xc6.onrender.com"
     : "http://localhost:3001";
 
 function request(url, options = {}) {
